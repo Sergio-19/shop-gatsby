@@ -1,18 +1,39 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
- */
+const path = require('path');
 
-/**
- * @type {import('gatsby').GatsbyNode['createPages']}
- */
-exports.createPages = async ({ actions }) => {
-  const { createPage } = actions
-  createPage({
-    path: "/using-dsg",
-    component: require.resolve("./src/templates/using-dsg.js"),
-    context: {},
-    defer: true,
-  })
+exports.createPages = async ({graphql, actions}) => {
+    const {data} = await graphql(`
+    query MyQuery {
+      allMysqlGoods {
+        nodes {
+          article
+        }
+      }
+    }
+    `)
+    data.allMysqlGoods.nodes.forEach(element => {
+      actions.createPage({
+        path: `/good/${element.article}`,
+        component: path.resolve('./src/templates/good.js'),
+        context: {article: element.article}
+      })
+    });
 }
+
+// exports.createPages = async ({graphql, actions}) => {
+//   const {data} = await graphql(`
+//   query MyQuery {
+//     allMysqlGoods {
+//       nodes {
+//         category
+//       }
+//     }
+//   }
+//   `)
+//   data.allMysqlGoods.nodes.forEach(element => {
+//     actions.createPage({
+//       path: `/categories/${element.category}`,
+//       component: path.resolve('./src/templates/category.js'),
+//       context: {category: element.category}
+//     })
+//   });
+// }

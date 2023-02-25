@@ -37,6 +37,8 @@ function Seo({ description, title, children }) {
       <meta name="twitter:creator" content={site.siteMetadata?.author || ``} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={metaDescription} />
+      <link rel="canonical" href="https://hopastore.ru" />
+      <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet"/>
       {children}
     </>
   )
